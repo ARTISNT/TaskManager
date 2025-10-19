@@ -21,6 +21,7 @@ public class TaskService : ITaskService
     public async Task<TaskEntity?> GetById(int id)
     {
         IdValidate(id);
+        await CheckEntityForExist(id);
         return await _taskRepository.GetById(id);
     }
 

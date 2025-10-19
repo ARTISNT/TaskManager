@@ -1,5 +1,9 @@
 ﻿using System.Data;
 using Api;
+using Api.Abstractions;
+using Api.Implementation.Factories;
+using Api.Implementation.Managers;
+using Api.Implementation.UI;
 using Application.Abstractions;
 using Application.Services;
 using FluentMigrator.Runner;
@@ -28,12 +32,15 @@ services.AddTransient<ICreatorOfConnection, SqlConnectionCreator>(sp =>
 });
 services.AddTransient<ITaskRepository, TaskRepository>();
 services.AddTransient<ITaskService, TaskService>();
-services.AddTransient<Ui>();
+services.AddTransient<ICommandFactory, CommandFactory>();
+services.AddTransient<ITaskManager, TaskManager>();
+services.AddTransient<ICommandsHandling, CommandsHandling>();
+services.AddTransient<ITaskMenuInvoker,  TaskMenuInvoker>();
 
 var builderServices = services.BuildServiceProvider();
 
-var ui =  builderServices.GetRequiredService<Ui>();
-await ui.Run();
+var taskMenuInvoker =  builderServices.GetRequiredService<ITaskMenuInvoker>();
+await taskMenuInvoker.Run();
 
 /*
 using (var serviceProvider = CreateServices())
