@@ -13,8 +13,8 @@ public class DeleteTask : ICommand
         _taskManager = taskManager;
     }
     
-    public void Execute()
+    public async Task ExecuteAsync()
     {
-        _taskManager.RemoveTask(_id);
+        await _taskManager.RemoveTask(_id);
     }
 }

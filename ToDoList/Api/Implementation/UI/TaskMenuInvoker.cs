@@ -1,30 +1,87 @@
+using System.Net.Mime;
 using Api.Abstractions;
 
 namespace Api.Implementation.UI;
 
 public class TaskMenuInvoker : ITaskMenuInvoker
 {
-    private readonly Dictionary<string, ICommand> _commands;
+    private readonly ICommandsHandling _commandsHandling;
 
-    public TaskMenuInvoker(Dictionary<string, ICommand> commands)
+    public TaskMenuInvoker(ICommandsHandling commandsHandling)
     {
-        _commands = commands;
+        _commandsHandling = commandsHandling;
     }
 
-    public void Run()
+    public async Task Run()
     {
         while (true)
         {
-            Console.WriteLine("\nКоманды: add, delete, show, exit");
-            Console.Write("Введите команду: ");
-            string input = Console.ReadLine()!;
+            try
+            {
+                await ManageMenuChoice();
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong.");
+            }
+        }
+    }
 
-            if (input == "exit") break;
+    private async Task ManageMenuChoice()
+    {
+        Console.WriteLine("\nChoose an action:\n" +
+                          "1.Add task\n" +
+                          "2.Get all tasks\n" +
+                          "3.Get task by id\n" +
+                          "4.Update status of task\n" +
+                          "5.Delete task\n" +
+                          "6.Exit\n");
 
-            if (_commands.TryGetValue(input, out var command))
-                command.Execute();
-            else
-                Console.WriteLine("Неизвестная команда");           
+        if(!int.TryParse(Console.ReadLine(), out var choice))
+        {
+            Console.WriteLine("Invalid number of choice.");
+        }
+
+        switch (choice)
+        {
+            case 1:
+                await _commandsHandling.ExecuteAddCommandAsync();
+                break;
+            case 2:
+                await _commandsHandling.ExecuteGetAllCommandsAsync();
+                break;
+            case 3:
+                await _commandsHandling.ExecuteGetTaskByIdAsync();
+                break;
+            case 4:
+                await _commandsHandling.ExecuteUpdateStatusCommandAsync();
+                break;
+            case 5:
+                await _commandsHandling.ExecuteDeleteCommandAsync();
+                break;
+            case 6:
+                Console.WriteLine("Goodbye(");
+                Environment.Exit(0);
+                break;
+            default:
+                Console.WriteLine("Invalid choice. Please try again.");
+                break;
         }
     }
 }

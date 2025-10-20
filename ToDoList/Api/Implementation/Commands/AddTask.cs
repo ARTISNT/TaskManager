@@ -13,9 +13,9 @@ public class AddTask : ICommand
         _taskManager = taskManager;
         _task = task;
     }
-    
-    public void Execute()
+
+    public async Task ExecuteAsync()
     {
-        _taskManager.AddTask(_task);
+        await _taskManager.AddTask(_task);
     }
 }

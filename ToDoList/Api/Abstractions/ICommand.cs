@@ -2,5 +2,5 @@ namespace Api.Abstractions;
 
 public interface ICommand
 {
-    public void Execute();
+    public Task ExecuteAsync();
 }

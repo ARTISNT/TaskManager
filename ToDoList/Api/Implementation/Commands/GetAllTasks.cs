@@ -11,8 +11,8 @@ public class GetAllTasks : ICommand
         _taskManager = taskManager;
     }
 
-    public void Execute()
+    public async Task ExecuteAsync()
     {
-        _taskManager.GetAllTasks();    
+        await _taskManager.GetAllTasks();    
     }
 }

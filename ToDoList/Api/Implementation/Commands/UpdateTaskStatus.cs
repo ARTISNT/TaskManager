@@ -15,8 +15,8 @@ public class UpdateTaskStatus : ICommand
         _status = status;
     }
     
-    public void Execute()
+    public async Task ExecuteAsync()
     {
-        _taskManager.UpdateStatus(_id, _status);
+        await _taskManager.UpdateStatus(_id, _status);
     }
 }

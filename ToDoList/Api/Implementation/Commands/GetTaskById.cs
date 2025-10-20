@@ -13,8 +13,8 @@ public class GetTaskById : ICommand
         _taskManager = taskManager;
     }
     
-    public void Execute()
+    public async Task ExecuteAsync()
     {
-        _taskManager.GetTaskById(_id);
+        await _taskManager.GetTaskById(_id);
     }
 }
