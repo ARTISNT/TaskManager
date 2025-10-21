@@ -1,7 +1,5 @@
 using Api.Abstractions;
-using Api.Implementation.Commands;
 using Application.Abstractions;
-using Application.Services;
 using Domain.Models.Entities;
 
 namespace Api.Implementation.Managers;

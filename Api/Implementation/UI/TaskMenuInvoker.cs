@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using Api.Abstractions;
 
 namespace Api.Implementation.UI;
